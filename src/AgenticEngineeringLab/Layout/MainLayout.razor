@@ -17,7 +17,7 @@
             <span class="hamburger__line" aria-hidden="true"></span>
             <span class="hamburger__line" aria-hidden="true"></span>
         </button>
-        <a href="/" class="app-topbar__brand">Agentic Engineering Lab</a>
+        <a href="@Nav.BaseUri" class="app-topbar__brand">Agentic Engineering Lab</a>
     </header>
 
     <div class="app-body">
@@ -41,7 +41,7 @@
                         bool isActive = _activeRouteModuleNumber == GetRouteModuleNumber(m);
                         bool isComplete = _completedIds.Contains(m.Id);
                         <li class="sidebar__module @(isComplete ? "sidebar__module--complete" : "") @(isActive ? "sidebar__module--active" : "")">
-                            <a href="/module/@GetRouteModuleNumber(m)"
+                            <a href="module/@GetRouteModuleNumber(m)"
                                aria-current="@(isActive ? "page" : null)">
                                 <span class="sidebar__check-slot" aria-hidden="true">
                                     @if (isComplete)
@@ -109,7 +109,9 @@
     {
         try
         {
-            var parts = new Uri(uri).AbsolutePath.TrimStart('/').Split('/');
+            var relativePath = Nav.ToBaseRelativePath(uri);
+            var pathWithoutQuery = relativePath.Split('?', '#')[0];
+            var parts = pathWithoutQuery.Split('/', StringSplitOptions.RemoveEmptyEntries);
             _activeRouteModuleNumber = (parts.Length >= 2 && parts[0] == "module" && int.TryParse(parts[1], out var n))
                 ? n : null;
         }
