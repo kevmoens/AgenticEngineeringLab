@@ -1,0 +1,233 @@
+{
+  "id": "module-12-syteline-plugin-value",
+  "moduleNumber": 12,
+  "title": "SyteLine Plugin Value",
+  "shortTitle": "SyteLine Value",
+  "course": "Agentic Development with GitHub Copilot CLI, LakeBank, SyteLine, and MCP",
+  "appName": "Agentic Engineering Lab",
+  "estimatedMinutes": 90,
+  "repoRequired": true,
+  "sourceCodeChangesAllowed": false,
+  "safetyLevel": "ReadOnly",
+  "primaryArtifact": "docs/syteline/syteline-plugin-value-note.md",
+  "prerequisites": [
+    "Learner can start a safe GitHub Copilot CLI session.",
+    "Learner can gather evidence from repo files and existing guidance."
+  ],
+  "moduleType": "workflow",
+  "status": "draft",
+  "summary": [
+    "This module focuses on SyteLine plugin value decisions, not full SyteLine implementation flow.",
+    "",
+    "You will determine whether SyteLine guidance is available and useful for the current repo and task.",
+    "",
+    "Output is concise: a plugin-value and decision-cue note."
+  ],
+  "whyItMatters": [
+    "SyteLine-related work often has higher domain risk and customer-specific constraints.",
+    "",
+    "Teams need fast, evidence-based decisions on whether SyteLine guidance should be used.",
+    "",
+    "Over-classifying too early creates noise. Under-checking plugin cues creates risk."
+  ],
+  "howItFits": [
+    "Module 14 taught plugin fundamentals and shared-guidance boundaries.",
+    "",
+    "Module 13 taught MCP value and boundaries.",
+    "",
+    "Module 12 now establishes SyteLine plugin decision cues before LakeBank specialization modules.",
+    "",
+    "Next in sequence:",
+    "- Module 3: LakeBank workflow activation",
+    "- Module 11: LakeBank end-to-end flow"
+  ],
+  "learningObjectives": [
+    "Identify evidence that SyteLine guidance is present or absent.",
+    "Explain when SyteLine plugin guidance adds value.",
+    "Use concise decision cues instead of broad taxonomy classification.",
+    "Separate product-standard assumptions from customer-specific assumptions.",
+    "Create a concise SyteLine plugin value note.",
+    "Record missing context that blocks safe follow-up work.",
+    "Avoid plugin installation or configuration changes in this module."
+  ],
+  "keyConceptsMarkdown": [
+    "### Concept 1: This module is value and cue detection",
+    "",
+    "Do not run a full SyteLine workflow here.",
+    "",
+    "Make an evidence-based decision on guidance value.",
+    "",
+    "---",
+    "",
+    "### Concept 2: Plugin decision cues should stay concise",
+    "",
+    "| Cue | What to look for | Decision impact |",
+    "|---|---|---|",
+    "| Guidance presence | plugin references, skill pointers, docs | Use SyteLine guidance when available |",
+    "| Repo context | customer-modification indicators | Increase caution and validation depth |",
+    "| Task context | forms/IDO/events/report/integration signals | Route to SyteLine-aware planning and review |",
+    "| Missing context | unclear environment, workflow, or ownership | Block and request context |",
+    "",
+    "---",
+    "",
+    "### Concept 3: Keep SLDev references targeted",
+    "",
+    "Reference SLDev only when needed to explain concrete SyteLine cues or risks.",
+    "",
+    "Do not expand into full framework training in this module."
+  ],
+  "mechanicsMarkdown": [
+    "Use one prompt to produce a concise plugin-value note.",
+    "",
+    "Require direct evidence links and explicit unknowns."
+  ],
+  "variationNotesMarkdown": [
+    "If SyteLine guidance is absent, document the gap and stop escalation.",
+    "",
+    "If guidance is present, identify how it should shape later planning and review."
+  ],
+  "instructorDemoMarkdown": [
+    "## Demo step 1: gather SyteLine guidance evidence",
+    "",
+    "Find references to SyteLine plugin instructions, skills, or docs.",
+    "",
+    "## Demo step 2: apply concise decision cues",
+    "",
+    "Assess guidance presence, repo context, and task context.",
+    "",
+    "## Demo step 3: produce concise note",
+    "",
+    "Record value decision, missing context, and risk note."
+  ],
+  "lab": {
+    "title": "Create a SyteLine plugin value and decision-cue note",
+    "safetyLevel": "ReadOnly",
+    "beforeYouStart": [
+      "I completed Modules 14 and 13.",
+      "I opened a terminal in the target repo.",
+      "I started GitHub Copilot CLI.",
+      "I know this lab is read-only and no plugin installation is allowed."
+    ],
+    "prompts": [
+      {
+        "label": "Lab prompt",
+        "promptText": [
+          "We are evaluating SyteLine plugin value for an internal course.",
+          "",
+          "Safety rules:",
+          "- Do not change source code.",
+          "- Do not change test code.",
+          "- Do not install or modify plugins.",
+          "- Do not change repo instructions or MCP configuration.",
+          "",
+          "Create docs/syteline/syteline-plugin-value-note.md with these sections:",
+          "",
+          "# SyteLine Plugin Value Note",
+          "",
+          "## Evidence of Guidance Presence",
+          "List concrete file or reference evidence for SyteLine guidance presence or absence.",
+          "",
+          "## Decision Cues",
+          "Summarize cue findings for guidance presence, repo context, task context, and missing context.",
+          "",
+          "## Value Decision",
+          "State whether SyteLine guidance should be used now, deferred, or blocked pending context.",
+          "",
+          "## Missing Context and Questions",
+          "List blocking unknowns and questions for human review.",
+          "",
+          "## Risk Note",
+          "State the top risk if the decision is wrong."
+        ],
+        "isOptional": false
+      },
+      {
+        "label": "Optional clarity prompt",
+        "promptText": [
+          "Review docs/syteline/syteline-plugin-value-note.md.",
+          "",
+          "Make it shorter and clearer without removing key evidence or decision rationale.",
+          "Do not implement code."
+        ],
+        "isOptional": true
+      }
+    ],
+    "expectedArtifact": {
+      "path": "docs/syteline/syteline-plugin-value-note.md",
+      "expectedContents": [
+        "guidance presence evidence",
+        "decision cues",
+        "value decision",
+        "missing context and questions",
+        "risk note"
+      ]
+    },
+    "verificationChecklist": [
+      "Did Copilot cite direct evidence for SyteLine guidance presence or absence?",
+      "Did Copilot use concise decision cues rather than broad taxonomy classification?",
+      "Did Copilot keep customer-specific assumptions separated from product assumptions?",
+      "Did Copilot record missing context and human questions?",
+      "Did Copilot avoid plugin and configuration changes?"
+    ],
+    "evidence": {
+      "artifactPath": "docs/syteline/syteline-plugin-value-note.md",
+      "summaryPrompt": "Write 3-5 sentences describing the SyteLine guidance value decision and top risk.",
+      "reflectionQuestions": [
+        "What evidence most strongly supported the decision?",
+        "What missing context could change the decision?",
+        "What should be reviewed by humans before follow-up work?"
+      ]
+    }
+  },
+  "skillCheck": [
+    {
+      "question": "What is the primary outcome of this module?",
+      "expectedAnswer": "A concise SyteLine plugin value and decision-cue note, not full workflow execution."
+    },
+    {
+      "question": "Why keep decision cues concise?",
+      "expectedAnswer": "To reduce noise and focus on evidence that changes action."
+    },
+    {
+      "question": "What should happen when guidance presence is unclear?",
+      "expectedAnswer": "Record missing context and block escalation until clarified."
+    },
+    {
+      "question": "Can this module install or modify the SyteLine plugin?",
+      "expectedAnswer": "No. Plugin changes are out of scope."
+    },
+    {
+      "question": "How should customer-specific assumptions be handled?",
+      "expectedAnswer": "Keep them separate and avoid promoting them as product-standard guidance."
+    },
+    {
+      "question": "When should SLDev references be used?",
+      "expectedAnswer": "Only when needed to explain concrete SyteLine cues or risk implications."
+    },
+    {
+      "question": "What comes after this module in sequence?",
+      "expectedAnswer": "Module 3 LakeBank activation, then Module 11 LakeBank end-to-end flow."
+    }
+  ],
+  "review": {
+    "summaryMarkdown": [
+      "In this module, you made an evidence-based SyteLine guidance value decision using concise cues.",
+      "",
+      "You documented value, missing context, and risk without expanding into full workflow execution."
+    ],
+    "readinessChecklist": [
+      "I can identify SyteLine guidance presence evidence.",
+      "I can apply concise decision cues.",
+      "I can produce a concise plugin-value note.",
+      "I can identify missing context and blocking questions.",
+      "I can avoid out-of-scope plugin changes."
+    ],
+    "commonMistakes": [
+      "Treating this module as full SyteLine workflow training.",
+      "Using broad classification taxonomy instead of decision cues.",
+      "Making decisions without evidence links.",
+      "Ignoring missing context before escalation."
+    ],
+    "nextModuleTeaser": "Module 3: LakeBank Workflow Activation\n\nNext you will make an evidence-based LakeBank activation decision and prepare the handoff artifact."
+  }
+}

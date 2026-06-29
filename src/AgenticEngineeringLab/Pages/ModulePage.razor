@@ -1,0 +1,318 @@
+@page "/module/{ModuleSequence:int}"
+@inject AgenticEngineeringLab.Services.ContentService Content
+
+<PageTitle>@(_module?.Title ?? "Loading...")</PageTitle>
+
+@if (_module == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="module-page">
+        <div class="module-page__header">
+            <h1>Module @_displayModuleNumber: @_module.Title</h1>
+            <div class="module-page__meta">
+                <SafetyBadge Level="_module.SafetyLevel" />
+                <span class="module-page__time">~@_module.EstimatedMinutes min</span>
+            </div>
+        </div>
+
+        @if (_sections.Count > 0)
+        {
+            <nav class="section-nav">
+                @foreach (var (label, idx) in _sections)
+                {
+                    <button class="section-nav__btn @(_activeSection == idx ? "section-nav__btn--active" : "")"
+                            @onclick="() => _activeSection = idx">@label</button>
+                }
+            </nav>
+        }
+
+        <div class="module-page__content">
+            @switch (_activeSection)
+            {
+                case 0:
+                    <div class="section-reading">
+                        @if (HasVisibleText(_module.Summary))
+                        {
+                            <MarkdownSection Markdown="@_module.Summary" />
+                        }
+                        @if (HasVisibleText(_module.WhyItMatters))
+                        {
+                            <h2>Why this matters</h2>
+                            <MarkdownSection Markdown="@_module.WhyItMatters" />
+                        }
+                        @if (HasVisibleText(_module.HowItFits))
+                        {
+                            <h2>How it fits the course</h2>
+                            <MarkdownSection Markdown="@_module.HowItFits" />
+                        }
+                        @if (HasVisibleItems(_module.LearningObjectives))
+                        {
+                            <h2>Learning objectives</h2>
+                            <ul>
+                                @foreach (var obj in _module.LearningObjectives.Where(HasVisibleText))
+                                {
+                                    <li>@obj</li>
+                                }
+                            </ul>
+                        }
+                        @if (HasVisibleText(_module.KeyConceptsMarkdown))
+                        {
+                            <h2>Key concepts</h2>
+                            <MarkdownSection Markdown="@_module.KeyConceptsMarkdown" />
+                        }
+                        @if (HasVisibleText(_module.MechanicsMarkdown))
+                        {
+                            <h2>CLI mechanics</h2>
+                            <MarkdownSection Markdown="@_module.MechanicsMarkdown" />
+                        }
+                        @if (HasVisibleText(_module.VariationNotesMarkdown))
+                        {
+                            <h2>Variation notes</h2>
+                            <MarkdownSection Markdown="@_module.VariationNotesMarkdown" />
+                        }
+                    </div>
+                    break;
+
+                case 1:
+                    <div class="section-demo">
+                        @if (HasVisibleText(_module.InstructorDemoMarkdown))
+                        {
+                            <MarkdownSection Markdown="@_module.InstructorDemoMarkdown" />
+                        }
+                    </div>
+                    break;
+
+                case 2:
+                    <div class="section-lab">
+                        @if (HasVisibleText(_module.Lab.Title))
+                        {
+                            <h2>@_module.Lab.Title</h2>
+                        }
+                        <SafetyBadge Level="_module.Lab.SafetyLevel" />
+                        @if (HasVisibleText(_module.Lab.SafetyDescription))
+                        {
+                            <MarkdownSection Markdown="@_module.Lab.SafetyDescription" />
+                        }
+
+                        @if (HasVisibleItems(_module.Lab.BeforeYouStart))
+                        {
+                            <h3>Before you start</h3>
+                            <ChecklistPanel Items="@_module.Lab.BeforeYouStart.Where(HasVisibleText).ToList()"
+                                            StorageKey="@($"checklist:before:{_module.Id}")" />
+                        }
+                        
+                        @if (HasVisibleText(_module.Lab.Details))
+                        {
+                            <MarkdownSection Markdown="@_module.Lab.Details" />
+                        }
+
+                        @if (HasVisiblePrompts(_module.Lab.Prompts))
+                        {
+                            <h3>Prompts</h3>
+                            @foreach (var prompt in _module.Lab.Prompts.Where(HasVisiblePrompt))
+                            {
+                                <PromptCard Card="prompt" />
+                            }
+                        }
+
+                        @if (HasVisibleExpectedArtifact(_module.Lab.ExpectedArtifact))
+                        {
+                            <h3>Expected artifact</h3>
+                            @if (HasVisibleText(_module.Lab.ExpectedArtifact.Path))
+                            {
+                                <code>@_module.Lab.ExpectedArtifact.Path</code>
+                            }
+                            @if (HasVisibleItems(_module.Lab.ExpectedArtifact.ExpectedContents))
+                            {
+                                <ul>
+                                    @foreach (var item in _module.Lab.ExpectedArtifact.ExpectedContents.Where(HasVisibleText))
+                                    {
+                                        <li>@item</li>
+                                    }
+                                </ul>
+                            }
+                        }
+
+                        @if (HasVisibleItems(_module.Lab.VerificationChecklist))
+                        {
+                            <h3>Verification checklist</h3>
+                            <ChecklistPanel Items="@_module.Lab.VerificationChecklist.Where(HasVisibleText).ToList()"
+                                            StorageKey="@($"checklist:verify:{_module.Id}")" />
+                        }
+                    </div>
+                    break;
+
+                case 3:
+                    <div class="section-reflection">
+                        @if (HasReflectionContent(_module))
+                        {
+                            <h2>Reflection</h2>
+                            <ReflectionForm ModuleId="@_module.Id"
+                                            SummaryPrompt="@_module.Lab.Evidence.SummaryPrompt"
+                                            Questions="@_module.Lab.Evidence.ReflectionQuestions.Where(HasVisibleText).ToList()" />
+                        }
+                    </div>
+                    break;
+
+                case 4:
+                    <div class="section-skillcheck">
+                        @if (HasVisibleSkillCheck(_module))
+                        {
+                            <h2>Skill check</h2>
+                            @foreach (var q in _module.SkillCheck.Where(IsVisibleSkillCheckQuestion))
+                            {
+                                <SkillCheckPanel Question="q" />
+                            }
+                        }
+                    </div>
+                    break;
+
+                case 5:
+                    <div class="section-review">
+                        @if (HasReviewContent(_module))
+                        {
+                            <h2>Module review</h2>
+                            @if (HasVisibleText(_module.Review.SummaryMarkdown))
+                            {
+                                <MarkdownSection Markdown="@_module.Review.SummaryMarkdown" />
+                            }
+                            @if (HasVisibleItems(_module.Review.ReadinessChecklist))
+                            {
+                                <h3>Readiness checklist</h3>
+                                <ChecklistPanel Items="@_module.Review.ReadinessChecklist.Where(HasVisibleText).ToList()"
+                                                StorageKey="@($"checklist:ready:{_module.Id}")" />
+                            }
+                            @if (HasVisibleItems(_module.Review.CommonMistakes))
+                            {
+                                <h3>Common mistakes</h3>
+                                <ul>
+                                    @foreach (var m in _module.Review.CommonMistakes.Where(HasVisibleText))
+                                    {
+                                        <li>@m</li>
+                                    }
+                                </ul>
+                            }
+                            @if (HasVisibleText(_module.Review.NextModuleTeaser))
+                            {
+                                <h3>What's next</h3>
+                                <MarkdownSection Markdown="@_module.Review.NextModuleTeaser" />
+                            }
+                            <ModuleCompletionButton ModuleId="@_module.Id" />
+                        }
+                    </div>
+                    break;
+            }
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int ModuleSequence { get; set; }
+
+    private AgenticEngineeringLab.Models.Module? _module;
+    private int _displayModuleNumber;
+    private int _activeSection = 0;
+    private List<(string label, int index)> _sections = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _module = await Content.GetModuleBySequenceAsync(ModuleSequence);
+        var summaries = await Content.GetModuleListAsync();
+        _displayModuleNumber = _module == null
+            ? ModuleSequence
+            : summaries.FirstOrDefault(m => m.ModuleNumber == _module.ModuleNumber)?.Sequence
+                ?? ModuleSequence;
+        _sections = BuildVisibleSections(_module);
+        _activeSection = _sections.Count > 0 ? _sections[0].index : 0;
+    }
+
+    private static bool HasVisibleText(string? text) => !string.IsNullOrWhiteSpace(text);
+
+    private static bool HasVisibleItems(IEnumerable<string>? items) =>
+        items?.Any(HasVisibleText) == true;
+
+    private static bool HasVisiblePrompt(AgenticEngineeringLab.Models.PromptCard? prompt) =>
+        prompt is not null
+        && (HasVisibleText(prompt.Label)
+            || HasVisibleText(prompt.IntroMarkdown)
+            || HasVisibleText(prompt.PromptText));
+
+    private static bool HasVisiblePrompts(IEnumerable<AgenticEngineeringLab.Models.PromptCard>? prompts) =>
+        prompts?.Any(HasVisiblePrompt) == true;
+
+    private static bool HasVisibleExpectedArtifact(AgenticEngineeringLab.Models.ExpectedArtifact? artifact) =>
+        artifact is not null && (HasVisibleText(artifact.Path) || HasVisibleItems(artifact.ExpectedContents));
+
+    private static bool HasReadingContent(AgenticEngineeringLab.Models.Module module) =>
+        HasVisibleText(module.Summary)
+        || HasVisibleText(module.WhyItMatters)
+        || HasVisibleText(module.HowItFits)
+        || HasVisibleItems(module.LearningObjectives)
+        || HasVisibleText(module.KeyConceptsMarkdown)
+        || HasVisibleText(module.MechanicsMarkdown)
+        || HasVisibleText(module.VariationNotesMarkdown);
+
+    private static bool HasLabContent(AgenticEngineeringLab.Models.Module module) =>
+        HasVisibleText(module.Lab.Title)
+        || HasVisibleText(module.Lab.SafetyDescription)
+        || HasVisibleItems(module.Lab.BeforeYouStart)
+        || HasVisiblePrompts(module.Lab.Prompts)
+        || HasVisibleExpectedArtifact(module.Lab.ExpectedArtifact)
+        || HasVisibleItems(module.Lab.VerificationChecklist);
+
+    private static bool HasReflectionContent(AgenticEngineeringLab.Models.Module module) =>
+        HasVisibleText(module.Lab.Evidence.SummaryPrompt)
+        || HasVisibleItems(module.Lab.Evidence.ReflectionQuestions);
+
+    private static bool IsVisibleSkillCheckQuestion(AgenticEngineeringLab.Models.SkillCheckQuestion question) =>
+        HasVisibleText(question.Question) || HasVisibleText(question.ExpectedAnswer);
+
+    private static bool HasVisibleSkillCheck(AgenticEngineeringLab.Models.Module module) =>
+        module.SkillCheck.Any(IsVisibleSkillCheckQuestion);
+
+    private static bool HasReviewContent(AgenticEngineeringLab.Models.Module module) =>
+        HasVisibleText(module.Review.SummaryMarkdown)
+        || HasVisibleItems(module.Review.ReadinessChecklist)
+        || HasVisibleItems(module.Review.CommonMistakes)
+        || HasVisibleText(module.Review.NextModuleTeaser);
+
+    private static List<(string label, int index)> BuildVisibleSections(AgenticEngineeringLab.Models.Module? module)
+    {
+        if (module == null)
+        {
+            return new();
+        }
+
+        var sections = new List<(string label, int index)>();
+
+        if (HasReadingContent(module))
+        {
+            sections.Add(("Reading", 0));
+        }
+        if (HasVisibleText(module.InstructorDemoMarkdown))
+        {
+            sections.Add(("Demo", 1));
+        }
+        if (HasLabContent(module))
+        {
+            sections.Add(("Lab", 2));
+        }
+        if (HasReflectionContent(module))
+        {
+            sections.Add(("Reflection", 3));
+        }
+        if (HasVisibleSkillCheck(module))
+        {
+            sections.Add(("Skill check", 4));
+        }
+        if (HasReviewContent(module))
+        {
+            sections.Add(("Review", 5));
+        }
+
+        return sections;
+    }
+}

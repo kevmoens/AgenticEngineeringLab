@@ -1,0 +1,46 @@
+@inject IJSRuntime JS
+
+<div class="prompt-card @(Card.IsOptional ? "prompt-card--optional" : "")">
+    <div class="prompt-card__header">
+        <span class="prompt-card__label">@Card.Label</span>
+        @if (Card.IsOptional)
+        {
+            <span class="prompt-card__optional-tag">Optional</span>
+        }
+        @if (HasVisibleText(Card.PromptText))
+        {
+            <button class="btn btn-copy" @onclick="CopyPrompt">@(_copied ? "Copied!" : "Copy prompt")</button>
+        }
+    </div>
+    @if (HasVisibleText(Card.IntroMarkdown))
+    {
+        <div class="prompt-card__intro">
+            <MarkdownSection Markdown="@Card.IntroMarkdown" />
+        </div>
+    }
+    @if (HasVisibleText(Card.PromptText))
+    {
+        <pre class="prompt-card__text">@Card.PromptText</pre>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public AgenticEngineeringLab.Models.PromptCard Card { get; set; } = default!;
+    private bool _copied;
+
+    private static bool HasVisibleText(string? text) => !string.IsNullOrWhiteSpace(text);
+
+    private async Task CopyPrompt()
+    {
+        if (!HasVisibleText(Card.PromptText))
+        {
+            return;
+        }
+
+        await JS.InvokeVoidAsync("navigator.clipboard.writeText", Card.PromptText);
+        _copied = true;
+        await Task.Delay(2000);
+        _copied = false;
+        StateHasChanged();
+    }
+}

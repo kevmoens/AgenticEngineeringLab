@@ -1,0 +1,261 @@
+{
+  "id": "module-08-creative-detail-and-decision-review",
+  "moduleNumber": 8,
+  "title": "Creative Detail and Decision Review",
+  "shortTitle": "Creative Review",
+  "course": "Agentic Development with GitHub Copilot CLI, LakeBank, SyteLine, and MCP",
+  "appName": "Agentic Engineering Lab",
+  "estimatedMinutes": 105,
+  "repoRequired": true,
+  "sourceCodeChangesAllowed": false,
+  "safetyLevel": "ReadOnly",
+  "primaryArtifact": "docs/reviews/creative-detail-and-decision-review.md",
+  "prerequisites": [
+    "Learner can start a safe GitHub Copilot CLI session.",
+    "Learner has a planning artifact ready for review."
+  ],
+  "moduleType": "foundational",
+  "status": "draft",
+  "summary": [
+    "Before implementation, convert one plan into at least two viable options and review them critically.",
+    "",
+    "This module teaches:",
+    "- creative option generation",
+    "- Rubber Duck skeptical review",
+    "- persona-based review with repo-specific examples",
+    "- decision selection with explicit tradeoffs"
+  ],
+  "whyItMatters": [
+    "A single unchallenged plan often hides risk.",
+    "",
+    "Generating at least two options improves design quality and exposes assumptions early.",
+    "",
+    "Rubber Duck and persona review help teams choose safer implementation paths before coding starts."
+  ],
+  "howItFits": [
+    "Module 7 produced a phased plan.",
+    "",
+    "Module 8 expands that plan into multiple options, critiques those options, and records a decision.",
+    "",
+    "Next you will use this reviewed decision in Module 9 test-first implementation."
+  ],
+  "learningObjectives": [
+    "Generate at least two implementation options before selecting a direction.",
+    "Use Rubber Duck as a skeptical reviewer mode.",
+    "Run persona-based reviews with repo-specific examples.",
+    "Compare options by risk, testability, and delivery impact.",
+    "Document the selected option with rationale and risk note.",
+    "Keep all review output read-only and planning-only.",
+    "Decide whether implementation can start or should remain blocked."
+  ],
+  "keyConceptsMarkdown": [
+    "### Concept 1: Two-option minimum",
+    "",
+    "Do not decide from a single idea.",
+    "",
+    "Produce Option A and Option B before choosing.",
+    "",
+    "---",
+    "",
+    "### Concept 2: Rubber Duck is skeptical reviewer mode",
+    "",
+    "Rubber Duck review challenges hidden assumptions, weak evidence, and missing safeguards.",
+    "",
+    "It is a review mode, not a coding mode.",
+    "",
+    "---",
+    "",
+    "### Concept 3: Persona review should be repo-specific",
+    "",
+    "Use persona reviewers that match your repo context, such as:",
+    "- architect for layering and coupling",
+    "- support for diagnostics and incident handling",
+    "- QA for test and edge-case coverage",
+    "- product designer for workflow clarity",
+    "",
+    "Require concrete repo-specific examples in feedback.",
+    "",
+    "---",
+    "",
+    "### Concept 4: Decision output must be explicit",
+    "",
+    "A useful decision includes:",
+    "- selected option",
+    "- reasons for rejecting alternatives",
+    "- risk note",
+    "- follow-up questions for human review"
+  ],
+  "mechanicsMarkdown": [
+    "Use one prompt to create option comparisons and review output in a single artifact.",
+    "",
+    "Use follow-up prompts to tighten findings, not to implement code."
+  ],
+  "variationNotesMarkdown": [
+    "In product repos, prioritize architecture consistency and regression safety.",
+    "",
+    "In customer-modification repos, prioritize validation depth and customer-impact containment."
+  ],
+  "instructorDemoMarkdown": [
+    "## Demo step 1: turn one plan into two options",
+    "",
+    "Create Option A and Option B for the same task.",
+    "",
+    "## Demo step 2: run Rubber Duck and persona review",
+    "",
+    "Use skeptical and role-based critique to compare both options.",
+    "",
+    "## Demo step 3: record the decision",
+    "",
+    "Choose one option and capture tradeoffs, risk note, and unresolved questions."
+  ],
+  "lab": {
+    "title": "Produce and review two implementation options",
+    "safetyLevel": "ReadOnly",
+    "beforeYouStart": [
+      "I opened a terminal in the target repo.",
+      "I started GitHub Copilot CLI.",
+      "I have a current planning artifact.",
+      "I know this lab is read-only and no implementation is allowed."
+    ],
+    "prompts": [
+      {
+        "label": "Lab prompt",
+        "promptText": [
+          "We are practicing creative detail and decision review for an internal course.",
+          "",
+          "Safety rules:",
+          "- Do not change source code.",
+          "- Do not change test code.",
+          "- Do not implement anything.",
+          "- Do not change repo instructions, plugins, or MCP configuration.",
+          "",
+          "Use @docs/plans/planning-before-coding-practice.md as the baseline plan.",
+          "",
+          "Create docs/reviews/creative-detail-and-decision-review.md with these sections:",
+          "",
+          "# Creative Detail and Decision Review",
+          "",
+          "## Baseline Plan",
+          "Reference the source plan and summary scope.",
+          "",
+          "## Option A",
+          "Describe approach, expected benefits, key risks, and test strategy.",
+          "",
+          "## Option B",
+          "Describe approach, expected benefits, key risks, and test strategy.",
+          "",
+          "## Rubber Duck Review",
+          "Challenge assumptions, missing evidence, missing tests, and hidden risk.",
+          "",
+          "## Persona Review (Repo-Specific)",
+          "Include at least three personas and give repo-specific examples.",
+          "",
+          "## Comparison Matrix",
+          "Compare Option A and B on complexity, risk, testability, support impact, and rollback clarity.",
+          "",
+          "## Selected Option and Rationale",
+          "State which option is selected and why.",
+          "",
+          "## Risk Note",
+          "State the top risk of the selected option and mitigation plan.",
+          "",
+          "## Human Decision Points",
+          "List questions that require human review before implementation."
+        ],
+        "isOptional": false
+      },
+      {
+        "label": "Optional decision-tightening prompt",
+        "promptText": [
+          "Review docs/reviews/creative-detail-and-decision-review.md.",
+          "",
+          "Strengthen the selected-option rationale and remove weak or repetitive findings.",
+          "Do not implement code."
+        ],
+        "isOptional": true
+      }
+    ],
+    "expectedArtifact": {
+      "path": "docs/reviews/creative-detail-and-decision-review.md",
+      "expectedContents": [
+        "option a",
+        "option b",
+        "rubber duck review",
+        "persona review with repo-specific examples",
+        "comparison matrix",
+        "selected option and rationale",
+        "risk note",
+        "human decision points"
+      ]
+    },
+    "verificationChecklist": [
+      "Did Copilot produce at least two options?",
+      "Did Rubber Duck feedback challenge assumptions and risk?",
+      "Did persona feedback include repo-specific examples?",
+      "Did the artifact compare options with clear criteria?",
+      "Did the selected option include rationale and risk note?",
+      "Did Copilot avoid implementation changes?"
+    ],
+    "evidence": {
+      "artifactPath": "docs/reviews/creative-detail-and-decision-review.md",
+      "summaryPrompt": "Write 3-5 sentences describing the chosen option and why it is safer or more effective.",
+      "reflectionQuestions": [
+        "What did Option B reveal that Option A missed?",
+        "Which reviewer feedback changed the final decision?",
+        "What risk remains unresolved?",
+        "What must be confirmed before implementation starts?"
+      ]
+    }
+  },
+  "skillCheck": [
+    {
+      "question": "Why require at least two options before deciding?",
+      "expectedAnswer": "It reduces tunnel vision and exposes tradeoffs that a single-option plan can hide."
+    },
+    {
+      "question": "What is Rubber Duck mode in this module?",
+      "expectedAnswer": "A skeptical reviewer mode that challenges assumptions and risk before implementation."
+    },
+    {
+      "question": "Why should persona feedback be repo-specific?",
+      "expectedAnswer": "Repo-specific examples make feedback actionable and reduce generic noise."
+    },
+    {
+      "question": "What should a comparison matrix include?",
+      "expectedAnswer": "Complexity, risk, testability, support impact, and rollback clarity."
+    },
+    {
+      "question": "What must accompany the selected option?",
+      "expectedAnswer": "Clear rationale, rejected-alternative reasoning, and a risk note."
+    },
+    {
+      "question": "Can this module include implementation changes?",
+      "expectedAnswer": "No. It is planning and review only."
+    },
+    {
+      "question": "When should implementation remain blocked?",
+      "expectedAnswer": "When major risks, missing evidence, or unresolved human decisions remain."
+    }
+  ],
+  "review": {
+    "summaryMarkdown": [
+      "In this module, you transformed one plan into multiple options and selected a direction using structured review.",
+      "",
+      "You used Rubber Duck and persona critique to improve quality before implementation."
+    ],
+    "readinessChecklist": [
+      "I can produce and compare at least two options.",
+      "I can run Rubber Duck skeptical review.",
+      "I can require repo-specific persona examples.",
+      "I can document selected option rationale and risk note.",
+      "I can identify when implementation should stay blocked."
+    ],
+    "commonMistakes": [
+      "Choosing the first option without comparison.",
+      "Using generic persona feedback with no repo detail.",
+      "Skipping risk notes.",
+      "Treating review output as implementation approval."
+    ],
+    "nextModuleTeaser": "Module 9: Test-Driven Agentic Development\n\nNext you will define tests first so implementation stays constrained and verifiable."
+  }
+}

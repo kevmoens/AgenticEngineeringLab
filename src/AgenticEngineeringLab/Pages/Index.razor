@@ -1,0 +1,48 @@
+@page "/"
+@inject AgenticEngineeringLab.Services.ContentService Content
+@inject AgenticEngineeringLab.Services.ProgressService Progress
+
+<PageTitle>Agentic Engineering Lab</PageTitle>
+
+<div class="home-page">
+    <h1>Agentic Engineering Lab</h1>
+    <p class="home-page__subtitle">Agentic Development with GitHub Copilot CLI</p>
+
+    <div class="module-list">
+        @foreach (var m in _modules)
+        {
+            <div class="module-card @(_completedIds.Contains(m.Id) ? "module-card--complete" : "")">
+                <div class="module-card__number">Module @GetDisplayModuleNumber(m)</div>
+                <div class="module-card__title">@m.Title</div>
+                @if (_completedIds.Contains(m.Id))
+                {
+                    <span class="module-card__badge">✓ Complete</span>
+                }
+                <a class="btn btn-start" href="/module/@GetRouteModuleNumber(m)">
+                    @(_completedIds.Contains(m.Id) ? "Review" : "Start")
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private List<AgenticEngineeringLab.Models.ModuleSummary> _modules = new();
+    private HashSet<string> _completedIds = new();
+
+    private static int GetDisplayModuleNumber(AgenticEngineeringLab.Models.ModuleSummary module) =>
+        module.Sequence > 0 ? module.Sequence : module.ModuleNumber;
+
+    private static int GetRouteModuleNumber(AgenticEngineeringLab.Models.ModuleSummary module) =>
+        module.Sequence > 0 ? module.Sequence : module.ModuleNumber;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _modules = await Content.GetModuleListAsync();
+        foreach (var m in _modules)
+        {
+            if (await Progress.IsCompleteAsync(m.Id))
+                _completedIds.Add(m.Id);
+        }
+    }
+}

@@ -1,0 +1,35 @@
+@inject AgenticEngineeringLab.Services.ProgressService Progress
+
+<div class="checklist-panel">
+    @for (int i = 0; i < Items.Count; i++)
+    {
+        var index = i;
+        <label class="checklist-item">
+            <input type="checkbox" checked="@_state[index]" @onchange="() => Toggle(index)" />
+            <span>@Items[index]</span>
+        </label>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public List<string> Items { get; set; } = new();
+    [Parameter, EditorRequired] public string StorageKey { get; set; } = "";
+
+    private List<bool> _state = new();
+
+    protected override void OnInitialized()
+    {
+        _state = Enumerable.Repeat(false, Items.Count).ToList();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _state = await Progress.LoadChecklistStateAsync(StorageKey, Items.Count);
+    }
+
+    private async Task Toggle(int index)
+    {
+        _state[index] = !_state[index];
+        await Progress.SaveChecklistStateAsync(StorageKey, _state);
+    }
+}

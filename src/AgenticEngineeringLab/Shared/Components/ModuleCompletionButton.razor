@@ -1,0 +1,34 @@
+@inject AgenticEngineeringLab.Services.ProgressService Progress
+@inject NavigationManager Nav
+
+<div class="module-completion">
+    @if (!_complete)
+    {
+        <button class="btn btn-complete" @onclick="MarkComplete">
+            I feel comfortable with this and I'm ready to continue
+        </button>
+    }
+    else
+    {
+        <div class="module-completion__done">
+            <span>✓ Module complete</span>
+            <a href="/">Back to course home</a>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string ModuleId { get; set; } = "";
+    private bool _complete;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _complete = await Progress.IsCompleteAsync(ModuleId);
+    }
+
+    private async Task MarkComplete()
+    {
+        await Progress.MarkCompleteAsync(ModuleId);
+        _complete = true;
+    }
+}

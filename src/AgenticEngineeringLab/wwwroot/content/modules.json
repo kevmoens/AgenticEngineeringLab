@@ -1,0 +1,152 @@
+[
+  {
+    "moduleNumber": 2,
+    "shortTitle": "CLI Fundamentals",
+    "title": "GitHub Copilot CLI Fundamentals",
+    "id": "module-02-github-copilot-cli-fundamentals",
+    "sequence": 1,
+    "contentFile": "module-01.json",
+    "sidebarSection": "CLI Foundations",
+    "sidebarOrder": 1
+  },
+  {
+    "moduleNumber": 1,
+    "shortTitle": "Mindset",
+    "title": "Agentic Development Mindset",
+    "id": "module-01-agentic-development-mindset",
+    "sequence": 2,
+    "contentFile": "module-02.json",
+    "sidebarSection": "CLI Foundations",
+    "sidebarOrder": 1
+  },
+  {
+    "moduleNumber": 4,
+    "shortTitle": "Context Engineering",
+    "title": "Context Engineering",
+    "id": "module-04-context-engineering",
+    "sequence": 3,
+    "contentFile": "module-03.json",
+    "sidebarSection": "Core Workflow",
+    "sidebarOrder": 2
+  },
+  {
+    "moduleNumber": 6,
+    "shortTitle": "Research First",
+    "title": "Research Before Planning",
+    "id": "module-06-research-before-planning",
+    "sequence": 4,
+    "contentFile": "module-04.json",
+    "sidebarSection": "Core Workflow",
+    "sidebarOrder": 2
+  },
+  {
+    "moduleNumber": 7,
+    "shortTitle": "Planning",
+    "title": "Planning Before Coding",
+    "id": "module-07-planning-before-coding",
+    "sequence": 5,
+    "contentFile": "module-05.json",
+    "sidebarSection": "Core Workflow",
+    "sidebarOrder": 2
+  },
+  {
+    "moduleNumber": 8,
+    "shortTitle": "Creative Review",
+    "title": "Creative Detail and Decision Review",
+    "id": "module-08-creative-detail-and-decision-review",
+    "sequence": 6,
+    "contentFile": "module-06.json",
+    "sidebarSection": "Core Workflow",
+    "sidebarOrder": 2
+  },
+  {
+    "moduleNumber": 9,
+    "shortTitle": "Test-Driven Development",
+    "title": "Test-Driven Agentic Development",
+    "id": "module-09-test-driven-agentic-development",
+    "sequence": 7,
+    "contentFile": "module-07.json",
+    "sidebarSection": "Core Workflow",
+    "sidebarOrder": 2
+  },
+  {
+    "moduleNumber": 10,
+    "shortTitle": "Agent Steering",
+    "title": "Agent Steering During Implementation",
+    "id": "module-10-agent-steering-during-implementation",
+    "sequence": 8,
+    "contentFile": "module-08.json",
+    "sidebarSection": "Core Workflow",
+    "sidebarOrder": 2
+  },
+  {
+    "moduleNumber": 16,
+    "shortTitle": "Governance and Safety",
+    "title": "Governance, Safety, and Failure Modes",
+    "id": "module-16-governance-safety-and-failure-modes",
+    "sequence": 9,
+    "contentFile": "module-09.json",
+    "sidebarSection": "Core Workflow",
+    "sidebarOrder": 2
+  },
+  {
+    "moduleNumber": 5,
+    "shortTitle": "Update Guidance",
+    "title": "Update Skills, Agents, and Instructions",
+    "id": "module-05-update-skills-agents-and-instructions",
+    "sequence": 10,
+    "contentFile": "module-10.json",
+    "sidebarSection": "Core Workflow",
+    "sidebarOrder": 2
+  },
+  {
+    "moduleNumber": 14,
+    "shortTitle": "Plugin Repos",
+    "title": "Plugin Repo Authoring and Sharing",
+    "id": "module-14-plugin-repo-authoring-and-sharing",
+    "sequence": 11,
+    "contentFile": "module-11.json",
+    "sidebarSection": "Plugin Fundamentals",
+    "sidebarOrder": 4
+  },
+  {
+    "moduleNumber": 13,
+    "shortTitle": "MCP",
+    "title": "MCP Servers",
+    "id": "module-13-mcp-servers",
+    "sequence": 12,
+    "contentFile": "module-12.json",
+    "sidebarSection": "MCP + Boundaries",
+    "sidebarOrder": 5
+  },
+  {
+    "moduleNumber": 12,
+    "shortTitle": "SyteLine Value",
+    "title": "SyteLine Plugin Value",
+    "id": "module-12-syteline-plugin-value",
+    "sequence": 13,
+    "contentFile": "module-13.json",
+    "sidebarSection": "SyteLine Plugin Value",
+    "sidebarOrder": 6
+  },
+  {
+    "moduleNumber": 3,
+    "shortTitle": "LakeBank Activation",
+    "title": "LakeBank Workflow Activation",
+    "id": "module-03-repo-type-classification",
+    "sequence": 14,
+    "contentFile": "module-14.json",
+    "sidebarSection": "LakeBank Activation",
+    "sidebarOrder": 7
+  },
+  {
+    "moduleNumber": 11,
+    "shortTitle": "LakeBank Flow",
+    "title": "LakeBank End-to-End Flow",
+    "id": "module-11-lakebank-workflow",
+    "sequence": 15,
+    "contentFile": "module-15.json",
+    "sidebarSection": "LakeBank End-to-End",
+    "sidebarOrder": 8
+  }
+]

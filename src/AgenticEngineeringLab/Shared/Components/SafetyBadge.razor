@@ -1,0 +1,14 @@
+@using AgenticEngineeringLab.Models
+
+<span class="safety-badge safety-badge--@Level.ToString().ToLower()">@Label</span>
+
+@code {
+    [Parameter] public SafetyLevel Level { get; set; }
+    private string Label => Level switch {
+        SafetyLevel.ReadOnly => "Read-only",
+        SafetyLevel.Guided => "Guided",
+        SafetyLevel.MakesChanges => "Makes changes",
+        SafetyLevel.Destructive => "Destructive",
+        _ => "Unknown"
+    };
+}

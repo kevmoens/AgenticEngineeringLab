@@ -1,0 +1,44 @@
+@inject AgenticEngineeringLab.Services.ProgressService Progress
+
+<div class="reflection-form">
+    @if (!string.IsNullOrWhiteSpace(SummaryPrompt))
+    {
+        <div class="reflection-form__summary">
+            <label>@SummaryPrompt</label>
+            <textarea rows="4" @bind="_summary" @bind:event="oninput" @onblur="Save" placeholder="Your summary..."></textarea>
+        </div>
+    }
+    @for (int i = 0; i < VisibleQuestions.Count; i++)
+    {
+        var q = VisibleQuestions[i];
+        <div class="reflection-form__question">
+            <label>@q</label>
+            <textarea rows="3" value="@GetAnswer(q)" @onchange="e => SetAnswer(q, e.Value?.ToString() ?? string.Empty)" @onblur="Save" placeholder="Your response..."></textarea>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string ModuleId { get; set; } = "";
+    [Parameter, EditorRequired] public string SummaryPrompt { get; set; } = "";
+    [Parameter, EditorRequired] public List<string> Questions { get; set; } = new();
+    private List<string> VisibleQuestions => Questions.Where(q => !string.IsNullOrWhiteSpace(q)).ToList();
+
+    private Dictionary<string, string> _answers = new();
+    private string _summary = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        _answers = await Progress.LoadReflectionAsync(ModuleId);
+        _summary = _answers.GetValueOrDefault("__summary", "");
+    }
+
+    private string GetAnswer(string q) => _answers.GetValueOrDefault(q, "");
+    private void SetAnswer(string q, string v) => _answers[q] = v;
+
+    private async Task Save()
+    {
+        _answers["__summary"] = _summary;
+        await Progress.SaveReflectionAsync(ModuleId, _answers);
+    }
+}

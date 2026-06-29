@@ -1,0 +1,23 @@
+<div class="skill-check-panel">
+    <div class="skill-check-panel__question">
+        <MarkdownSection Markdown="@Question.Question" />
+    </div>
+    <textarea class="skill-check-panel__response" placeholder="Your response..." @bind="_response" rows="4"></textarea>
+    @if (!_revealed)
+    {
+        <button class="btn btn-reveal" @onclick="() => _revealed = true">Show expected answer</button>
+    }
+    else
+    {
+        <div class="skill-check-panel__expected">
+            <strong>Expected answer:</strong>
+            <MarkdownSection Markdown="@Question.ExpectedAnswer" />
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public AgenticEngineeringLab.Models.SkillCheckQuestion Question { get; set; } = default!;
+    private string _response = "";
+    private bool _revealed;
+}

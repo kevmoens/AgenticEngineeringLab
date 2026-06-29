@@ -1,0 +1,144 @@
+@inherits LayoutComponentBase
+@inject AgenticEngineeringLab.Services.ContentService Content
+@inject AgenticEngineeringLab.Services.ProgressService Progress
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+@implements IDisposable
+
+<div class="app-layout">
+
+    <header class="app-topbar">
+        <button class="hamburger @(_sidebarOpen ? "hamburger--open" : "")"
+                @onclick="ToggleSidebar"
+                aria-label="@(_sidebarOpen ? "Close navigation" : "Open navigation")"
+                aria-expanded="@(_sidebarOpen ? "true" : "false")"
+                aria-controls="sidebar-nav">
+            <span class="hamburger__line" aria-hidden="true"></span>
+            <span class="hamburger__line" aria-hidden="true"></span>
+            <span class="hamburger__line" aria-hidden="true"></span>
+        </button>
+        <a href="/" class="app-topbar__brand">Agentic Engineering Lab</a>
+    </header>
+
+    <div class="app-body">
+
+        @if (_sidebarOpen)
+        {
+            <div class="sidebar-backdrop" @onclick="CloseSidebar" aria-hidden="true"></div>
+        }
+
+        <nav id="sidebar-nav"
+             class="sidebar @(_sidebarOpen ? "" : "sidebar--collapsed")"
+             aria-label="Course modules"
+             aria-hidden="@(_sidebarOpen ? "false" : "true")">
+            <ul class="sidebar__modules" role="list">
+                @foreach (var sectionGroup in _sidebarSections)
+                {
+                    <li class="sidebar__section-header" aria-hidden="true">@sectionGroup.Title</li>
+
+                    @foreach (var m in sectionGroup.Modules)
+                    {
+                        bool isActive = _activeRouteModuleNumber == GetRouteModuleNumber(m);
+                        bool isComplete = _completedIds.Contains(m.Id);
+                        <li class="sidebar__module @(isComplete ? "sidebar__module--complete" : "") @(isActive ? "sidebar__module--active" : "")">
+                            <a href="/module/@GetRouteModuleNumber(m)"
+                               aria-current="@(isActive ? "page" : null)">
+                                <span class="sidebar__check-slot" aria-hidden="true">
+                                    @if (isComplete)
+                                    {
+                                        <span class="sidebar__check">✓</span>
+                                    }
+                                </span>
+                                <span class="sidebar__label">@m.ShortTitle</span>
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+        </nav>
+
+        <main class="main-content" id="main-content" tabindex="-1">
+            @Body
+        </main>
+
+    </div>
+</div>
+
+@code {
+    private List<AgenticEngineeringLab.Models.ModuleSummary> _modules = new();
+    private List<SidebarSectionGroup> _sidebarSections = new();
+    private HashSet<string> _completedIds = new();
+    private bool _sidebarOpen = true;
+    private int? _activeRouteModuleNumber;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _modules = await Content.GetModuleListAsync();
+        _sidebarSections = BuildSidebarSections(_modules);
+
+        foreach (var m in _modules)
+        {
+            if (await Progress.IsCompleteAsync(m.Id))
+                _completedIds.Add(m.Id);
+        }
+
+        UpdateActiveModule(Nav.Uri);
+        Nav.LocationChanged += OnLocationChanged;
+
+        try
+        {
+            var width = await JS.InvokeAsync<int>("getWindowWidth");
+            if (width < 768) _sidebarOpen = false;
+        }
+        catch { /* JS not ready — keep default open */ }
+    }
+
+    private async void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+    {
+        UpdateActiveModule(e.Location);
+        try
+        {
+            var width = await JS.InvokeAsync<int>("getWindowWidth");
+            if (width < 768) _sidebarOpen = false;
+        }
+        catch { }
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void UpdateActiveModule(string uri)
+    {
+        try
+        {
+            var parts = new Uri(uri).AbsolutePath.TrimStart('/').Split('/');
+            _activeRouteModuleNumber = (parts.Length >= 2 && parts[0] == "module" && int.TryParse(parts[1], out var n))
+                ? n : null;
+        }
+        catch { _activeRouteModuleNumber = null; }
+    }
+
+    private void ToggleSidebar() => _sidebarOpen = !_sidebarOpen;
+    private void CloseSidebar() => _sidebarOpen = false;
+
+    public void Dispose() => Nav.LocationChanged -= OnLocationChanged;
+
+    private static List<SidebarSectionGroup> BuildSidebarSections(IEnumerable<AgenticEngineeringLab.Models.ModuleSummary> modules) =>
+        modules
+            .GroupBy(m => new
+            {
+                Order = m.SidebarOrder > 0 ? m.SidebarOrder : int.MaxValue,
+                Title = string.IsNullOrWhiteSpace(m.SidebarSection) ? "Modules" : m.SidebarSection
+            })
+            .OrderBy(g => g.Key.Order)
+            .ThenBy(g => g.Key.Title)
+            .Select(g => new SidebarSectionGroup(
+                g.Key.Title,
+                g.OrderBy(m => m.Sequence > 0 ? m.Sequence : int.MaxValue)
+                 .ThenBy(m => m.ModuleNumber)
+                 .ToList()))
+            .ToList();
+
+    private sealed record SidebarSectionGroup(string Title, List<AgenticEngineeringLab.Models.ModuleSummary> Modules);
+
+    private static int GetRouteModuleNumber(AgenticEngineeringLab.Models.ModuleSummary module) =>
+        module.Sequence > 0 ? module.Sequence : module.ModuleNumber;
+}
