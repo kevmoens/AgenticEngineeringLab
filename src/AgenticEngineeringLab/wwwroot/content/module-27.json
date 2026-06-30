@@ -1,6 +1,6 @@
 {
-  "id": "module-16-governance-safety-and-failure-modes",
-  "moduleNumber": 16,
+  "id": "module-09-governance-safety-and-failure-modes",
+  "moduleNumber": 9,
   "title": "Governance, Safety, and Failure Modes",
   "shortTitle": "Governance and Safety",
   "course": "Agentic Development with GitHub Copilot CLI, LakeBank, SyteLine, and MCP",
@@ -60,17 +60,11 @@
     "The team needs concrete checkpoints, artifacts, gates, and escalation rules."
   ],
   "howItFits": [
-    "This module closes the fundamentals loop:",
-    "",
-    "```text",
-    "Research -> Planning -> Creative detail -> Building -> Review -> Risk gate decision",
-    "```",
+    "This module closes the building loop:",
     "",
     "It sits after building and steering so the learner can evaluate real artifacts before continuing.",
     "",
-    "It intentionally comes before the update loop module, where approved lessons are promoted into skills, agents, and instructions.",
-    "",
-    "This module does not assume completion of later specialization modules."
+    "It intentionally comes before the update loop module, where approved lessons are promoted into skills, agents, and instructions."
   ],
   "learningObjectives": [
     "Explain why a practical risk gate is required before continuation.",

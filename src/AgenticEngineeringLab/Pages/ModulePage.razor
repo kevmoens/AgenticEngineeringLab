@@ -11,10 +11,10 @@ else
 {
     <div class="module-page">
         <div class="module-page__header">
-            <h1>Module @_displayModuleNumber: @_module.Title</h1>
+            <h1>Module: @_module.Title</h1>
             <div class="module-page__meta">
-                <SafetyBadge Level="_module.SafetyLevel" />
-                <span class="module-page__time">~@_module.EstimatedMinutes min</span>
+                @*<SafetyBadge Level="_module.SafetyLevel" />*@
+                @*<span class="module-page__time">~@_module.EstimatedMinutes min</span>*@
             </div>
         </div>
 
@@ -48,6 +48,7 @@ else
                             <h2>How it fits the course</h2>
                             <MarkdownSection Markdown="@_module.HowItFits" />
                         }
+                        @*
                         @if (HasVisibleItems(_module.LearningObjectives))
                         {
                             <h2>Learning objectives</h2>
@@ -58,6 +59,7 @@ else
                                 }
                             </ul>
                         }
+                        *@
                         @if (HasVisibleText(_module.KeyConceptsMarkdown))
                         {
                             <h2>Key concepts</h2>
